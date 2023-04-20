@@ -4,13 +4,12 @@ RegisterNetEvent("nerp:qb-mail:getMail", function()
 	local src = source
 	local Player  = QBCore.Functions.GetPlayer(src)
 
-	local emails = MySQL.query.await([[
+[[
 		SELECT * 
 		FROM player_mails 
-		WHERE citizenid = ? AND deleted_at is not null
+		WHERE citizenid = ? AND deleted_at is null
 		ORDER BY created_at DESC
-	]], { Player.PlayerData.citizenid })
-
+	]]
 	for index, _ in pairs(emails) do
 		if emails[index].button ~= nil then
 			emails[index].button = json.decode(emails[index].button)
