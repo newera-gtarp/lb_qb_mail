@@ -65,8 +65,7 @@ local function sendEmail(citizenid, mailData)
 			mailData.subject, 
 			mailData.message, 
 			mailData.button and json.encode(mailData.button) or nil
-		}
-	end)
+	})
 
 	local Player = QBCore.Functions.GetPlayerByCitizenId(citizenid)
 	if Player ~= nil then
@@ -92,5 +91,6 @@ end)
 RegisterServerEvent('qb-phone:server:sendNewMail')
 AddEventHandler('qb-phone:server:sendNewMail', function(emailData)
     local src = source
+	local Player = QBCore.Functions.GetPlayer(src)
     sendEmail(Player.PlayerData.citizenid, emailData)
 end)

@@ -28,7 +28,7 @@ const theme = createTheme(themeOptions);
 const Root = () => {
   return (
     <HashRouter>
-      <React.Suspense fallback="Loading app">
+      <React.Suspense fallback={<></>}>
         <RecoilRoot>
           <AppContainer>
             <App theme={theme} />
