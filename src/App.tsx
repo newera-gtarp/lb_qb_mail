@@ -49,22 +49,20 @@ const App = (props: AppProps) => {
   });
 
   return (
-    <RecoilRoot>
-      <SnackbarProvider>
-        <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={props.theme}>
-            <PhoneSnackbar />
-            <Container isDarkMode={isDarkMode}>
-              <Header>Email</Header>
-              <React.Suspense fallback={<></>}>
-                <Route path="/" exact component={InboxPage} />
-                <Route path="/:id" exact component={EmailDetailsPage} />
-              </React.Suspense>
-            </Container>
-          </ThemeProvider>
-        </StyledEngineProvider>
-      </SnackbarProvider>
-    </RecoilRoot>
+    <SnackbarProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={props.theme}>
+          <PhoneSnackbar />
+          <Container isDarkMode={isDarkMode}>
+            <Header>Email</Header>
+            <React.Suspense fallback={<></>}>
+              <Route path="/" exact component={InboxPage} />
+              <Route path="/:id" exact component={EmailDetailsPage} />
+            </React.Suspense>
+          </Container>
+        </ThemeProvider>
+      </StyledEngineProvider>
+    </SnackbarProvider>
   );
 };
 

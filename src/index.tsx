@@ -6,6 +6,7 @@ import App from "./App";
 import { NuiProvider } from "react-fivem-hooks";
 import { createTheme } from "@mui/material";
 import { themeOptions } from "./app.theme";
+import { RecoilRoot } from "recoil";
 
 const AppContainer = styled.div`
   z-index: 2;
@@ -27,11 +28,13 @@ const theme = createTheme(themeOptions);
 const Root = () => {
   return (
     <HashRouter>
-      <NuiProvider>
-        <AppContainer>
-          <App theme={theme} />
-        </AppContainer>
-      </NuiProvider>
+      <React.Suspense fallback="Loading app">
+        <RecoilRoot>
+          <AppContainer>
+            <App theme={theme} />
+          </AppContainer>
+        </RecoilRoot>
+      </React.Suspense>
     </HashRouter>
   );
 };
