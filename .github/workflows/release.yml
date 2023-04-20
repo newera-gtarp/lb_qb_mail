@@ -35,20 +35,21 @@ jobs:
     
     - name: Bundle
       run: |
-        mkdir -p ./temp/npwd_qb_mail
-        cp ./{README.md,fxmanifest.lua} ./temp/npwd_qb_mail
-        cp -r ./client ./temp/npwd_qb_mail
-        cp -r ./server ./temp/npwd_qb_mail
-        cp -r ./web ./temp/npwd_qb_mail
-        cd ./temp && zip -r ../npwd_qb_mail.zip ./npwd_qb_mail
+        mkdir -p ./temp/lb_qb_mail
+        cp ./{README.md,fxmanifest.lua} ./temp/lb_qb_mail
+        cp -r ./client ./temp/lb_qb_mail
+        cp -r ./server ./temp/lb_qb_mail
+        cp -r ./web ./temp/lb_qb_mail
+        cp app-icon.png ./temp/lb_qb_mail/web/dist
+        cd ./temp && zip -r ../lb_qb_mail.zip ./lb_qb_mail
     - name: Create Release
       uses: "marvinpinto/action-automatic-releases@v1.2.1"
       id: auto_release
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        title: NPWD QB Mail App | ${{ steps.get_tag.outputs.VERSION_TAG }}
+        title: LB Phone QB Mail App | ${{ steps.get_tag.outputs.VERSION_TAG }}
         prerelease: false
-        files: npwd_qb_mail.zip
+        files: lb_qb_mail.zip
 
       env:
         CI: false

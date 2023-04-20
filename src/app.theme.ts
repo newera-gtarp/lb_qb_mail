@@ -1,22 +1,17 @@
-import { common, red, orange } from '@mui/material/colors';
-import { ThemeOptions } from '@mui/material';
+import { grey, common } from "@mui/material/colors";
+import { ThemeOptions } from "@mui/material";
 
-export const MAIL_APP_PRIMARY_COLOR = orange[500];
-export const MAIL_APP_TEXT_COLOR = common.white;
+export const EMAIL_APP_DEFAULT_PRIMARY_COLOR = "#00695c";
+export const EMAIL_APP_DEFAULT_TEXT_COLOR = common.white;
 
-export const theme: ThemeOptions = {
+export const themeOptions: ThemeOptions = {
   palette: {
+    mode: "dark",
     primary: {
-      main: MAIL_APP_PRIMARY_COLOR,
-      dark: orange[900],
-      light: orange[500],
-      contrastText: MAIL_APP_TEXT_COLOR,
-    },
-    secondary: {
-      main: orange[500],
-      dark: orange[900],
-      light: orange[500],
-      contrastText: MAIL_APP_TEXT_COLOR,
+      main: EMAIL_APP_DEFAULT_PRIMARY_COLOR,
+      dark: "#004940",
+      // light: "#99d5cf",
+      contrastText: EMAIL_APP_DEFAULT_TEXT_COLOR,
     },
   },
 };

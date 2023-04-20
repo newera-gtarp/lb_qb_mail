@@ -1,18 +1,32 @@
-import React from 'react';
-import { MAIL_APP_PRIMARY_COLOR, MAIL_APP_TEXT_COLOR } from '../app.theme';
-import { Typography, Box } from '@mui/material';
+import React, { ReactNode } from "react";
+import { Typography, useTheme } from "@mui/material";
+import styled from "@emotion/styled";
 
-const Header = () => {
+export const HEADER_HEIGHT = "4rem";
+const Container = styled.div<{ backgroundColor: string }>`
+  display: flex;
+  align-items: center;
+
+  min-height: ${HEADER_HEIGHT};
+  padding-left: 1.5rem;
+  background-color: ${({ backgroundColor }) => backgroundColor};
+`;
+
+interface HeaderProps {
+  children: ReactNode;
+}
+
+const Header = ({ children }: HeaderProps) => {
+  const theme = useTheme();
   return (
-    <Box
-      px={2}
-      pt={2}
-      sx={{ width: '100%', textAlign: 'left', backgroundColor: MAIL_APP_PRIMARY_COLOR }}
+    <Container
+      backgroundColor={theme.palette.primary.main}
+      style={{ paddingTop: "43px" }}
     >
-      <Typography sx={{ color: MAIL_APP_TEXT_COLOR }} paragraph variant={'h5'}>
-        Mail
+      <Typography variant="h5" color="primary.contrastText">
+        {children}
       </Typography>
-    </Box>
+    </Container>
   );
 };
 

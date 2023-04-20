@@ -9,14 +9,14 @@ shared_scripts {
 }
 
 server_script {
-    'server/server.lua',
     '@oxmysql/lib/MySQL.lua',
+    'server/server.lua',
 }
-
 
 ui_page 'web/dist/index.html'
 
 files {
     'web/dist/index.html',
     'web/dist/*.js',
+    'web/dist/app-icon.png'
 }

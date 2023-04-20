@@ -1,21 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
-const { ModuleFederationPlugin } = webpack.container;
-const deps = require('./package.json').dependencies;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 // HMR
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ReactRefreshTypeScript = require('react-refresh-typescript');
 const isDevelopment = process.env.NODE_ENV === 'development';
-
-/* TODO: Fix for real */
-/* Probably bad way of fixing this */
-delete deps['@emotion/react'];
-delete deps['@emotion/styled'];
-delete deps['@mui/material'];
-delete deps['@mui/styles'];
-delete deps['@mui/icons-material'];
 
 module.exports = {
   entry: './src/bootstrap.ts',
@@ -58,24 +48,6 @@ module.exports = {
     clean: true,
   },
   plugins: [
-    new ModuleFederationPlugin({
-      name: 'npwd_qb_mail',
-      filename: 'remoteEntry.js',
-      exposes: {
-        './config': './npwd.config',
-      },
-      shared: {
-        ...deps,
-        react: {
-          singleton: true,
-          requiredVersion: deps.react,
-        },
-        'react-dom': {
-          singleton: true,
-          requiredVersion: deps['react-dom'],
-        },
-      },
-    }),
     new HtmlWebpackPlugin({
       cache: false,
       template: './src/index.html',

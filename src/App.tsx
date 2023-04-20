@@ -1,15 +1,22 @@
 import React from 'react';
-import { NuiProvider } from 'react-fivem-hooks';
-import styled from 'styled-components';
-import { IPhoneSettings } from '@project-error/npwd-types';
-import { i18n } from 'i18next';
-import { Theme, StyledEngineProvider, ThemeProvider, Typography, Box } from '@mui/material';
-import MailList from './components/MailList';
-import { RecoilRoot } from 'recoil';
-import MailModal from './components/MailModal';
-import Header from './components/Header';
-import { PhoneSnackbar } from './snackbar/PhoneSnackbar';
-import SnackbarProvider from './snackbar/SnackbarProvider';
+import { NuiProvider, useNuiEvent } from "react-fivem-hooks";
+import styled from "styled-components";
+import {
+  Theme,
+  StyledEngineProvider,
+  ThemeProvider,
+  Typography,
+  Box,
+} from "@mui/material";
+import { RecoilRoot } from "recoil";
+import { PhoneSnackbar } from "./snackbar/PhoneSnackbar";
+import SnackbarProvider from "./snackbar/SnackbarProvider";
+import { Route } from "react-router";
+import { InboxPage } from "./components/views/InboxPage";
+import { EmailDetailsPage } from "./components/views/EmailDetailsPage";
+import Header from "./components/Header";
+import { Email } from "./types/mail";
+import { useEmails } from "./atoms/email-atoms";
 
 const Container = styled.div<{ isDarkMode: any }>`
   flex: 1;
@@ -27,12 +34,19 @@ const Container = styled.div<{ isDarkMode: any }>`
 `;
 interface AppProps {
   theme: Theme;
-  i18n: i18n;
-  settings: IPhoneSettings;
 }
 
 const App = (props: AppProps) => {
-  const isDarkMode = props.theme.palette.mode === 'dark';
+  const isDarkMode = props.theme.palette.mode === "dark";
+
+  const [, setEmails] = useEmails();
+
+  useNuiEvent<{ email: Email }>({
+    event: "nerp:qb-mail:newMail",
+    callback: (data) => {
+      setEmails((prev) => [...prev, data.email]);
+    },
+  });
 
   return (
     <RecoilRoot>
@@ -41,9 +55,11 @@ const App = (props: AppProps) => {
           <ThemeProvider theme={props.theme}>
             <PhoneSnackbar />
             <Container isDarkMode={isDarkMode}>
-              <Header />
-              <MailModal />
-              <MailList isDarkMode={isDarkMode} />
+              <Header>Email</Header>
+              <React.Suspense fallback={<></>}>
+                <Route path="/" exact component={InboxPage} />
+                <Route path="/:id" exact component={EmailDetailsPage} />
+              </React.Suspense>
             </Container>
           </ThemeProvider>
         </StyledEngineProvider>

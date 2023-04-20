@@ -1,48 +1,54 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
-RegisterNUICallback("npwd:qb-mail:getMail", function(_, cb)
-	TriggerServerEvent("npwd:qb-mail:getMail")
-	RegisterNetEvent("npwd:qb-mail:sendMail", function(players)
-		cb({ status = "ok", data = players })
+RegisterNUICallback("nerp:qb-mail:getMail", function(_, cb)
+	TriggerServerEvent("nerp:qb-mail:getMail")
+	RegisterNetEvent("nerp:qb-mail:sendMail", function(emails)
+		cb({ status = "ok", data = emails })
 	end)
 end)
 
-RegisterNUICallback("npwd:qb-mail:updateRead", function(data, cb)
-	TriggerServerEvent("npwd:qb-mail:updateRead", data)
+RegisterNUICallback("nerp:qb-mail:updateRead", function(id, cb)
+	TriggerServerEvent("nerp:qb-mail:updateRead", id)
 	cb({})
 end)
 
-RegisterNUICallback("npwd:qb-mail:deleteMail", function(data, cb)
-	TriggerServerEvent("npwd:qb-mail:deleteMail", data)
-	RegisterNetEvent("npwd:qb-mail:mailDeleted", function(result)
-		if result then
-			cb({ status = "ok" })
-		else
-			cb({ status = "error" })
-		end
-	end)
+RegisterNUICallback("nerp:qb-mail:deleteMail", function(id, cb)
+	TriggerServerEvent("nerp:qb-mail:deleteMail", id)
+	cb({ status = "ok" })
 end)
 
-RegisterNUICallback("npwd:qb-mail:updateButton", function(data, cb)
-	TriggerEvent(data.button.buttonEvent, data.button.buttonData)
-	TriggerServerEvent("npwd:qb-mail:updateButton", data.mailid)
-	RegisterNetEvent("npwd:qb-mail:buttonUpdated", function(result)
-		if result then
-			cb({ status = "ok" })
-		else
-			cb({ status = "error" })
-		end
-	end)
+RegisterNUICallback("nerp:qb-mail:buttonPressed", function(button, cb)
+	if button and button.enabled then
+		TriggerEvent(button.buttonEvent, button.buttonData)
+	end
+	cb({ status = "ok" })
 end)
 
-RegisterNetEvent('npwd:qb-mail:newMail', function(data)
-	exports.npwd:sendUIMessage({type = "npwd:qb-mail:newMail", payload = {data}})
-	exports["npwd"]:createNotification({
-		notisId = "npwd:newmail",
-		appId = "mail",
-		content = Lang:t('newmail'),
-		keepOpen = false,
-		duration = 5000,
-		path = "/mail",
+RegisterNetEvent('nerp:qb-mail:newMail', function(email)
+	exports["lb-phone"].SendCustomAppMessage('qb-mail', { type = "nerp:qb-mail:newMail", payload = { email } });
+	exports["lb-phone"]:SendNotification({
+		app = "qb-mail",
+		title = email.sender,
+		content = email.subject
+	})
+end)
+
+CreateThread(function()
+	while GetResourceState("lb-phone") ~= "started" do
+		Wait(0)
+	end
+
+	exports["lb-phone"]:RemoveCustomApp("qb-mail")
+
+	exports["lb-phone"]:AddCustomApp({
+		identifier = "qb-mail",
+		name = "Mail",
+		description = "Check your important mail on the go!",
+		developer = "EyeFind",
+		defaultApp = true,
+		size = 10000, -- kb
+		-- images = { "https://example.com/photo.jpg" }, -- OPTIONAL array of images for the app on the app store
+		ui = GetCurrentResourceName() .. "/web/dist/index.html",
+		icon = "https://cfx-nui-" .. GetCurrentResourceName() .. "/web/dist/app-icon.png",
 	})
 end)
