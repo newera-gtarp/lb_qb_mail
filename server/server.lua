@@ -17,7 +17,7 @@ RegisterNetEvent("nerp:qb-mail:getMail", function()
 		end
 	end
 
-	TriggerClientEvent('nerp:qb-mail:sendMail', src, mailResults)
+	TriggerClientEvent('nerp:qb-mail:sendMail', src, emails)
 end)
 
 RegisterNetEvent('nerp:qb-mail:updateRead', function(id)

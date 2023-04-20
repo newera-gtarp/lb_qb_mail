@@ -55,10 +55,8 @@ const App = (props: AppProps) => {
           <PhoneSnackbar />
           <Container isDarkMode={isDarkMode}>
             <Header>Email</Header>
-            <React.Suspense fallback={<></>}>
-              <Route path="/" exact component={InboxPage} />
-              <Route path="/:id" exact component={EmailDetailsPage} />
-            </React.Suspense>
+            <Route path="/" exact component={InboxPage} />
+            <Route path="/:id" exact component={EmailDetailsPage} />
           </Container>
         </ThemeProvider>
       </StyledEngineProvider>
